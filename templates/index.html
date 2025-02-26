@@ -6,39 +6,45 @@
     <title>ScheduLumos</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/fav.png' ) }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/styles.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css' ) }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap">
 </head>
 
 <body>
-    <h1>ScheduLumos</h1>
+    <div class="container">
 
-    <div class="button-container">
-        <a href="{{ url_for('fcfs') }}">
-            <div class="button">FCFS</div>
-        </a>
-        <a href="{{ url_for('sjf_non_preemptive') }}">
-            <div class="button">SJF Non-Preemptive</div>
-        </a>
-        <a href="{{ url_for('sjf_preemptive') }}">
-            <div class="button">SJF Preemptive</div>
-        </a>
-        <a href="{{ url_for('priority_scheduling') }}">
-            <div class="button">Priority Scheduling</div>
-        </a>
-        <a href="{{ url_for('round_robin') }}">
-            <div class="button">Round Robin</div>
-        </a>
+        <div class="header">
+            <h1>ScheduLumos</h1>
+        </div>
+
+        <div class="body-container">
+            <a href="{{ url_for('fcfs') }}">
+                <div class="button">FCFS</div>
+            </a>
+            <a href="{{ url_for('sjf_non_preemptive') }}">
+                <div class="button">SJF Non-Preemptive</div>
+            </a>
+            <a href="{{ url_for('sjf_preemptive') }}">
+                <div class="button">SJF Preemptive</div>
+            </a>
+            <a href="{{ url_for('priority_scheduling') }}">
+                <div class="button">Priority Scheduling</div>
+            </a>
+            <a href="{{ url_for('round_robin') }}">
+                <div class="button">Round Robin</div>
+            </a>
+        </div>
+
+        <div class="footer">
+            &copy; KAUS4R&nbsp; &nbsp;| &nbsp;
+            <a href="https://github.com/kausar2nd/ScheduLumos" class="socio-link" target="_blank">
+                <img src="{{ url_for('static', filename='images/github.png') }} " width="20px"></a>
+            &nbsp;
+            <a href="https://www.linkedin.com/in/kausar2nd/" class="socio-link" target="_blank">
+                <img src="{{ url_for('static', filename='images/linkedin.png') }} " width="20px"></a>
+        </div>
     </div>
-
-    <footer>
-        &copy; KAUS4R&nbsp; &nbsp;| &nbsp;
-        <a href="https://github.com/kausaraahmed/ScheduLumos" class="socio-link" target="_blank">
-            <img src="{{ url_for('static', filename='images/github.png') }} " width="20px"></a>
-        &nbsp;
-        <a href="https://www.linkedin.com/in/kausaraahmed/" class="socio-link" target="_blank">
-            <img src="{{ url_for('static', filename='images/linkedin.png') }} " width="20px"></a>
-    </footer>
 
 </body>
 
