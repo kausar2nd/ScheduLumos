@@ -74,6 +74,48 @@ and demonstrate the behavior of CPU scheduling algorithms.
 
 - GitHub (for version control and continuous deployment)
 
+## Structure:
+```bash
+Schedulumos
+│
+├── readme.md
+├── LICENSE
+├── app.py
+├── requirements.txt
+├── vercel.json
+├── python/
+│   ├── fcfs.py
+│   ├── priority_scheduling.py
+│   ├── round_robin.py
+│   ├── run_algorithms.py
+│   ├── sjf_non_preemptive.py
+│   ├── sjf_preemptive.py
+│   ├── tempCodeRunnerFile.py
+│   ├── utils.py
+│   └── __pycache__/
+├── static/
+│   ├── css/
+│   │   ├── algorithm_page_style.css
+│   │   ├── compare_style.css
+│   │   └── styles.css
+│   ├── images/
+│   └── js/
+│       ├── compare.js
+│       ├── fcfs.js
+│       ├── priority_schedule.js
+│       ├── round_robin.js
+│       ├── sjf_non_preemptive.js
+│       └── sjf_preemptive.js
+└── templates/
+    ├── compare.html
+    ├── fcfs.html
+    ├── index.html
+    ├── priority_scheduling.html
+    ├── round_robin.html
+    ├── sjf_non_preemptive.html
+    └── sjf_preemptive.html
+```
+
 ## Setup
 
 ### Prerequisites
