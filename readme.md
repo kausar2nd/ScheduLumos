@@ -74,46 +74,46 @@ and demonstrate the behavior of CPU scheduling algorithms.
 
 - GitHub (for version control and continuous deployment)
 
-## Structure:
-```bash
-Schedulumos
-│
-├── readme.md
-├── LICENSE
-├── app.py
-├── requirements.txt
-├── vercel.json
-├── python/
-│   ├── fcfs.py
-│   ├── priority_scheduling.py
-│   ├── round_robin.py
-│   ├── run_algorithms.py
-│   ├── sjf_non_preemptive.py
-│   ├── sjf_preemptive.py
-│   ├── tempCodeRunnerFile.py
-│   ├── utils.py
-│   └── __pycache__/
-├── static/
-│   ├── css/
-│   │   ├── algorithm_page_style.css
-│   │   ├── compare_style.css
-│   │   └── styles.css
-│   ├── images/
-│   └── js/
-│       ├── compare.js
-│       ├── fcfs.js
-│       ├── priority_schedule.js
-│       ├── round_robin.js
-│       ├── sjf_non_preemptive.js
-│       └── sjf_preemptive.js
-└── templates/
-    ├── compare.html
-    ├── fcfs.html
-    ├── index.html
-    ├── priority_scheduling.html
-    ├── round_robin.html
-    ├── sjf_non_preemptive.html
-    └── sjf_preemptive.html
+## Structure
+
+``` bash
+ScheduLumos
+├─ app.py
+├─ LICENSE
+├─ python
+│  ├─ fcfs.py
+│  ├─ priority_scheduling.py
+│  ├─ round_robin.py
+│  ├─ run_algorithms.py
+│  ├─ sjf_non_preemptive.py
+│  ├─ sjf_preemptive.py
+│  ├─ tempCodeRunnerFile.py
+│  └─ utils.py
+├─ readme.md
+├─ requirements.txt
+├─ static
+│  ├─ css
+│  │  ├─ algorithm_page_style.css
+│  │  ├─ compare_style.css
+│  │  └─ styles.css
+│  ├─ images
+│  │  └─ <image assets>
+│  └─ js
+│     ├─ compare.js
+│     ├─ fcfs.js
+│     ├─ priority_schedule.js
+│     ├─ round_robin.js
+│     ├─ sjf_non_preemptive.js
+│     └─ sjf_preemptive.js
+├─ templates
+│  ├─ compare.html
+│  ├─ fcfs.html
+│  ├─ index.html
+│  ├─ priority_scheduling.html
+│  ├─ round_robin.html
+│  ├─ sjf_non_preemptive.html
+│  └─ sjf_preemptive.html
+└─ vercel.json
 ```
 
 ## Setup
@@ -130,35 +130,35 @@ Schedulumos
 
 1. **Clone the repository:**
 
-```bash
+   ```bash
 
-git clone https://github.com/kausaraahmed/scheduLumos.git
+   git clone https://github.com/kausaraahmed/scheduLumos.git
 
-cd scheduLumos
+   cd scheduLumos
 
-```
+   ```
 
 2. **Install dependencies:**
 
-It's recommended to use a virtual environment:
+   It's recommended to use a virtual environment:
 
-```bash
+   ```bash
 
-python3 -m venv venv
+   python3 -m venv venv
 
-source venv/bin/activate # On Windows use `venv\Scripts\activate`
+   source venv/bin/activate # On Windows use `venv\Scripts\activate`
 
-pip  install  -r  requirements.txt
+   pip  install  -r  requirements.txt
 
-```
+   ```
 
 3. **Run the application locally:**
 
-```bash
+   ```bash
 
-flask run
+   python app.py
 
-```
+   ```
 
 The application will be accessible at `http://127.0.0.1:5000/`.
 
