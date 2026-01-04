@@ -3,12 +3,17 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>ScheduLumos</title>
+    <title>ScheduLumos - CPU Scheduling Algorithm Visualizer</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/fav.png' ) }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/styles.css">
+    <meta name="description"
+        content="An interactive tool to visualize CPU scheduling algorithms like FCFS, SJF (Preemptive and Non-Preemptive), Priority Scheduling, and Round Robin. Perfect for students and developers.">
+    <meta name="keywords"
+        content="CPU Scheduling, Algorithm Visualizer, FCFS, SJF, Priority Scheduling, Round Robin, Operating Systems, ScheduLumos">
+    <meta name="author" content="Kausar Ahmed">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css' ) }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
@@ -37,12 +42,13 @@
         </div>
 
         <div class="footer">
-            &copy; KAUS4R&nbsp; &nbsp;| &nbsp;
+            &copy; KAUS4R |
             <a href="https://github.com/kausar2nd/ScheduLumos" class="socio-link" target="_blank">
-                <img src="{{ url_for('static', filename='images/github.png') }} " width="20px"></a>
-            &nbsp;
-            <a href="https://www.linkedin.com/in/kausar2nd/" class="socio-link" target="_blank">
-                <img src="{{ url_for('static', filename='images/linkedin.png') }} " width="20px"></a>
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/kausar2nd" class="socio-link" target="_blank">
+                <i class="fab fa-linkedin"></i>
+            </a>
         </div>
     </div>
 

@@ -14,19 +14,16 @@ body {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    animation: pop 0.6s ease-in-out;
+    animation: fadeInScale 0.5s ease-in-out;
 }
 
-@keyframes pop {
+@keyframes fadeInScale {
     0% {
-        transform: scale(0.4);
+        opacity: 0;
+        transform: scale(0.95);
     }
-
-    50% {
-        transform: scale(1.01);
-    }
-
     100% {
+        opacity: 1;
         transform: scale(1);
     }
 }
@@ -69,35 +66,35 @@ a {
     border: 0.3vw solid transparent;
     border-radius: 1vw 4vw;
     box-shadow: 2px 2px 5px 1px #14161990;
-    /* box-shadow: 2px 2px rgb(141, 141, 141); */
-    transition: 0.2s ease-in-out;
+    transition: all 0.3s ease-in-out;
     cursor: pointer;
 }
 
 .button:hover {
     border: 0.3vw solid #ec6126;
     background-color: #141619f5;
+    transform: translateY(-3px);
+    box-shadow: 3px 3px 8px 2px #14161990;
 }
 
 .footer {
     text-align: center;
     padding: 10px 0;
     font-size: 14px;
+    color: #101010;
 }
 
 .socio-link {
-    margin: 0 5px;
-    right: 0;
-    bottom: 3px;
-    transition: 0.1s ease-in-out;
-}
-
-.socio-link a {
-    margin-left: 5px;
+    margin: 0 8px;
+    color: #101010;
+    font-size: 20px;
+    transition: 0.2s ease-in-out;
+    text-decoration: none;
 }
 
 .socio-link:hover {
-    scale: 1.1;
+    color: #ec6126;
+    transform: scale(1.15);
 }
 
 @media screen and (max-width: 767px) {

@@ -3,57 +3,82 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>FCFS Algorithm</title>
+    <title>FCFS Scheduling | ScheduLumos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/fav.png' ) }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/algorithm_page_style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/algorithm_style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
-    <div class="main-container">
-        <h1>FCFS Algorithm</h1>
-
-        <div class="input-container">
-            <label for="arrival-time">Arrival Time (space-separated): &nbsp;</label>
-            <input type="text" id="arrival-time" name="arrival-time" placeholder="Enter arrival time">
-            <label for="burst-time">Burst Time (space-separated): &nbsp;</label>
-            <input type="text" id="burst-time" name="burst-time" placeholder="Enter burst time">
-        </div>
-
-        <button id="run-algo">Run Algorithm</button>
-
-        <div id="result-container">
-
-            <a id="download-link" href="#" style="display: none; position: absolute; top: 10px; right: 10px;">
-                <img src="{{ url_for('static', filename='images/file.png') }}" alt="Download Result"
-                    style="width: 30px; height: 30px; cursor: pointer;">
-            </a>
-
-            <div id="result"></div>
-
-            <a href="{{ url_for('compare') }}" class="send-compare" id="send_compare"
-                style="display: none;  position: absolute; bottom: 0; right: 0;">
-                <button>Compare Results</button>
+    <div class="header">
+        <h1>FCFS Scheduling Algorithm</h1>
+        <div class="header-buttons">
+            <button class="btn btn-secondary" id="load-example">Load Example</button>
+            <button class="btn btn-danger" id="clear-all">Clear All</button>
+            <a href="{{ url_for('home') }}" style="text-decoration: none;">
+                <button class="btn btn-primary">Main Menu</button>
             </a>
         </div>
-
-        <a href="{{ url_for('index') }}" class="back_to_main">
-            <button>Main Menu</button>
-        </a>
-
-        <footer>
-            &copy; KAUS4R&nbsp; &nbsp;| &nbsp;
-            <a href="https://github.com/kausaraahmed/ScheduLumos" class="socio-link" target="_blank">
-                <img src="{{ url_for('static', filename='images/github.png') }} " width="17px" alt="GitHub"></a>
-            &nbsp;
-            <a href="https://www.linkedin.com/in/kausaraahmed/" class="socio-link" target="_blank">
-                <img src="{{ url_for('static', filename='images/linkedin.png') }} " width="17px" alt="LinkedIn"></a>
-        </footer>
     </div>
 
-    <script src="{{ url_for('static', filename='js/fcfs.js') }}"></script>
+    <div class="main-content">
+        <div class="left-panel">
+            <h2 class="panel-title">Process Input</h2>
 
+            <div class="info-box">
+                <strong>First-Come, First-Served (FCFS)</strong><br>
+                Processes are executed in the order they arrive. Once a process starts executing, it
+                runs until
+                completion.
+                <br><br>
+                <strong>Arrival Time:</strong> When the process enters the ready queue<br>
+                <strong>Burst Time:</strong> Time required for CPU execution
+            </div>
+
+            <table class="input-table" id="process-table">
+                <thead>
+                    <tr>
+                        <th>Process</th>
+                        <th>Arrival Time</th>
+                        <th>Burst Time</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody id="process-tbody">
+                    <tr>
+                        <td><strong>P1</strong></td>
+                        <td><input type="number" class="arrival-time" min="0" value="0"></td>
+                        <td><input type="number" class="burst-time" min="1" value="1"></td>
+                        <td><button class="btn-remove" onclick="removeProcess(this)">✖</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button class="btn-add" id="add-process">+ Add Process</button>
+            <div id="validation-message"></div>
+            <button class="btn-run" id="run-algo">Run Algorithm</button>
+        </div>
+
+        <div class="right-panel">
+            <h2 class="panel-title">Results</h2>
+            <div id="output-section">
+                <div class="output-empty">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    <p style="font-size: 16px; font-weight: 500;">No results yet</p>
+                    <p style="font-size: 14px; margin-top: 10px;">Run the algorithm to see scheduling
+                        results</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/algorithm_common.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fcfs.js') }}"></script>
 </body>
 
 </html>

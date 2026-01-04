@@ -70,7 +70,7 @@ and demonstrate the behavior of CPU scheduling algorithms.
 
 - **Deployment**:
 
-- Render (for hosting the application)
+- Vercel (for hosting the application)
 
 - GitHub (for version control and continuous deployment)
 
@@ -87,26 +87,23 @@ ScheduLumos
 │  ├─ run_algorithms.py
 │  ├─ sjf_non_preemptive.py
 │  ├─ sjf_preemptive.py
-│  ├─ tempCodeRunnerFile.py
 │  └─ utils.py
 ├─ readme.md
 ├─ requirements.txt
 ├─ static
 │  ├─ css
-│  │  ├─ algorithm_page_style.css
-│  │  ├─ compare_style.css
+│  │  ├─ new_algorithm_style.css
 │  │  └─ styles.css
 │  ├─ images
 │  │  └─ <image assets>
 │  └─ js
-│     ├─ compare.js
+│     ├─ algorithm_common.js
 │     ├─ fcfs.js
 │     ├─ priority_schedule.js
 │     ├─ round_robin.js
 │     ├─ sjf_non_preemptive.js
 │     └─ sjf_preemptive.js
 ├─ templates
-│  ├─ compare.html
 │  ├─ fcfs.html
 │  ├─ index.html
 │  ├─ priority_scheduling.html
@@ -164,8 +161,8 @@ The application will be accessible at `http://127.0.0.1:5000/`.
 
 ### Deployment
 
-The application is deployed on [Render](https://render.com/). To deploy your own version, push your changes to GitHub,
-and Render will automatically build and deploy the application.
+The application is deployed on [Vercel](https://vercel.com/). To deploy your own version, push your changes to GitHub,
+and Vercel will automatically build and deploy the application.
 
 ## Usage
 

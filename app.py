@@ -73,56 +73,6 @@ def round_robin():
     return render_template("round_robin.html")
 
 
-# Route for Compare Algorithm page
-@app.route("/compare", methods=["GET", "POST"])
-def compare():
-    if request.method == "POST":
-
-        global global_arrival_times
-        global global_burst_times
-        global global_time_quantum
-        global global_priority
-        global algo
-        global gtta
-
-        algo = request.form.get("algo")
-        print("Algorithm accessed : ", algo)
-
-        if algo is None:
-            global_arrival_times = request.form.get("arrival-time")
-            global_burst_times = request.form.get("burst-time")
-            global_time_quantum = request.form.get("time-quantum")
-            global_priority = request.form.get("priority")
-
-        else:
-            run = RunAlgorithms()
-            global_time_quantum = request.form.get("tQ")
-            global_priority = request.form.get("priority")
-
-            if algo == "fcfs":
-                return run.run_fcfs(global_arrival_times, global_burst_times)
-
-            elif algo == "sjfnp":
-                return run.run_sjfnp(global_arrival_times, global_burst_times)
-
-            if algo == "sjfp":
-                return run.run_sjfp(global_arrival_times, global_burst_times)
-
-            elif algo == "priority":
-                return run.run_priority(
-                    global_arrival_times, global_burst_times, global_priority
-                )
-
-            elif algo == "rr":
-                return run.run_rr(
-                    global_arrival_times, global_burst_times, global_time_quantum
-                )
-
-    return render_template(
-        "compare.html", at=global_arrival_times, bt=global_burst_times
-    )
-
-
 # Route for returning to the main menu
 @app.route("/index")
 def index():
@@ -130,5 +80,4 @@ def index():
 
 
 if __name__ == "__main__":
-    # app.run(debug=True)
     app.run(host="0.0.0.0", port=5000)
