@@ -1,10 +1,4 @@
-from python.utils import Utils
-
-
 class RoundRobin:
-    def __init__(self):
-        pass
-
     def round_robin(self, processes, arrival_time, burst_time, time_quantum):
         n = len(processes)
         remaining_burst_time = burst_time[:]
@@ -50,13 +44,22 @@ class RoundRobin:
         avg_waiting_time = sum(waiting_time) / n
         avg_turnaround_time = sum(turnaround_time) / n
 
-        result = "Program No.\tArrival Time\tBurst Time\tWait Time\tTurnAround Time\n"
+        result_processes = []
         for i in range(n):
-            result += f"{i + 1}\t\t{arrival_time[i]}\t\t{burst_time[i]}\t\t{waiting_time[i]}\t\t{turnaround_time[i]}\n"
+            result_processes.append(
+                {
+                    "id": i,
+                    "arrival_time": arrival_time[i],
+                    "burst_time": burst_time[i],
+                    "waiting_time": waiting_time[i],
+                    "turnaround_time": turnaround_time[i],
+                    "completion_time": completion_time[i],
+                }
+            )
 
-        result += f"\nAverage Waiting Time: {avg_waiting_time:.2f}\n"
-        result += f"Average Turnaround Time: {avg_turnaround_time:.2f}\n"
-
-        result += '\n' + Utils().draw_gantt_chart(execution_order)
-
-        return result
+        return {
+            "processes": result_processes,
+            "average_waiting_time": float(f"{avg_waiting_time:.2f}"),
+            "average_turnaround_time": float(f"{avg_turnaround_time:.2f}"),
+            "gantt_chart": execution_order,
+        }

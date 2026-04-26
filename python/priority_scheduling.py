@@ -1,10 +1,4 @@
-from python.utils import Utils
-
-
 class PriorityScheduling:
-    def __init__(self):
-        pass
-
     def priority_scheduling(self, processes, arrival_time, burst_time, priority):
         n = len(processes)
         waiting_time = [0] * n
@@ -12,36 +6,53 @@ class PriorityScheduling:
         completion_time = [0] * n
         execution_order = []
 
-        # Sorting processes based on priority
-        combined = list(zip(processes, arrival_time, burst_time, priority))
-        combined.sort(key=lambda x: x[3])  # Sort by priority
-        sorted_processes, sorted_arrival_time, sorted_burst_time, sorted_priority = zip(*combined)
+        current_time = 0
+        completed = 0
+        is_completed = [False] * n
 
-        # Calculating waiting time and turnaround time
-        waiting_time[0] = 0
-        completion_time[0] = sorted_burst_time[0]
-        turnaround_time[0] = completion_time[0]
-        execution_order.append(sorted_processes[0])
+        while completed != n:
+            idx = -1
+            highest_priority = float("inf")
 
-        for i in range(1, n):
-            waiting_time[i] = completion_time[i - 1] - sorted_arrival_time[i]
-            if waiting_time[i] < 0:
-                waiting_time[i] = 0
-            completion_time[i] = waiting_time[i] + sorted_burst_time[i] + sorted_arrival_time[i]
-            turnaround_time[i] = completion_time[i] - sorted_arrival_time[i]
-            waiting_time[i] = turnaround_time[i] - sorted_burst_time[i]
-            execution_order.append(sorted_processes[i])
+            for i in range(n):
+                if arrival_time[i] <= current_time and not is_completed[i]:
+                    if priority[i] < highest_priority:
+                        highest_priority = priority[i]
+                        idx = i
+                    elif priority[i] == highest_priority:
+                        if arrival_time[i] < arrival_time[idx]:
+                            idx = i
+
+            if idx != -1:
+                waiting_time[idx] = current_time - arrival_time[idx]
+                completion_time[idx] = current_time + burst_time[idx]
+                turnaround_time[idx] = completion_time[idx] - arrival_time[idx]
+                current_time += burst_time[idx]
+                is_completed[idx] = True
+                completed += 1
+                execution_order.append(processes[idx])
+            else:
+                current_time += 1
 
         avg_waiting_time = sum(waiting_time) / n
         avg_turnaround_time = sum(turnaround_time) / n
 
-        result = 'Process_no\tArrival_Time\tBurst_Time\tCompletion_Time\tTurnAround_Time\tWaiting_Time\n'
+        result_processes = []
         for i in range(n):
-            result += f"{sorted_processes[i] + 1}\t\t{sorted_arrival_time[i]}\t\t{sorted_burst_time[i]}\t\t{completion_time[i]}\t\t{turnaround_time[i]}\t\t{waiting_time[i]}\n"
+            result_processes.append(
+                {
+                    "id": processes[i],
+                    "arrival_time": arrival_time[i],
+                    "burst_time": burst_time[i],
+                    "waiting_time": waiting_time[i],
+                    "turnaround_time": turnaround_time[i],
+                    "completion_time": completion_time[i],
+                }
+            )
 
-        result += f"\nAverage Waiting Time: {avg_waiting_time:.2f}\n"
-        result += f"Average Turnaround Time: {avg_turnaround_time:.2f}\n"
-
-        result += '\n' + Utils().draw_gantt_chart(execution_order)
-
-        return result
+        return {
+            "processes": result_processes,
+            "average_waiting_time": float(f"{avg_waiting_time:.2f}"),
+            "average_turnaround_time": float(f"{avg_turnaround_time:.2f}"),
+            "gantt_chart": execution_order,
+        }

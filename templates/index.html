@@ -1,57 +1,55 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>ScheduLumos - CPU Scheduling Algorithm Visualizer</title>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='images/fav.png' ) }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="An interactive tool to visualize CPU scheduling algorithms like FCFS, SJF (Preemptive and Non-Preemptive), Priority Scheduling, and Round Robin. Perfect for students and developers.">
-    <meta name="keywords"
-        content="CPU Scheduling, Algorithm Visualizer, FCFS, SJF, Priority Scheduling, Round Robin, Operating Systems, ScheduLumos">
-    <meta name="author" content="Kausar Ahmed">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css' ) }}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>ScheduLumos - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 
 <body>
     <div class="container">
-
-        <div class="header">
+        <header>
             <h1>ScheduLumos</h1>
-        </div>
-
-        <div class="body-container">
-            <a href="{{ url_for('fcfs') }}">
-                <div class="button">FCFS</div>
+            <p>Interactive CPU Scheduling Algorithm Visualizer</p>
+        </header>
+        <section class="algorithms-grid">
+            <a href="{{ url_for('fcfs') }}" class="algo-card">
+                <h3>FCFS</h3>
+                <p>First Come First Served</p>
             </a>
-            <a href="{{ url_for('sjf_non_preemptive') }}">
-                <div class="button">SJF Non-Preemptive</div>
+            <a href="{{ url_for('sjf_non_preemptive') }}" class="algo-card">
+                <h3>SJF (Non-Preemptive)</h3>
+                <p>Shortest Job First</p>
             </a>
-            <a href="{{ url_for('sjf_preemptive') }}">
-                <div class="button">SJF Preemptive</div>
+            <a href="{{ url_for('sjf_preemptive') }}" class="algo-card">
+                <h3>SJF (Preemptive)</h3>
+                <p>Shortest Remaining Time First</p>
             </a>
-            <a href="{{ url_for('priority_scheduling') }}">
-                <div class="button">Priority Scheduling</div>
+            <a href="{{ url_for('priority_scheduling') }}" class="algo-card">
+                <h3>Priority Scheduling</h3>
+                <p>Lower number = Higher priority</p>
             </a>
-            <a href="{{ url_for('round_robin') }}">
-                <div class="button">Round Robin</div>
+            <a href="{{ url_for('round_robin') }}" class="algo-card">
+                <h3>Round Robin</h3>
+                <p>Time Slice Based Scheduling</p>
             </a>
-        </div>
-
-        <div class="footer">
-            &copy; KAUS4R |
-            <a href="https://github.com/kausar2nd/ScheduLumos" class="socio-link" target="_blank">
-                <i class="fab fa-github"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/kausar2nd" class="socio-link" target="_blank">
-                <i class="fab fa-linkedin"></i>
-            </a>
-        </div>
+        </section>
     </div>
 
+    <footer>
+        <p>
+            Developed by <strong>KAUS4R</strong>&nbsp; ·
+            <a href="https://github.com/kausar2nd/" target="_blank" title="GitHub" class="footer-icon">
+                <i class="fab fa-github" aria-hidden="true"></i>
+            </a> ·
+            <a href="https://www.linkedin.com/in/kausar2nd/" target="_blank" title="LinkedIn" class="footer-icon">
+                <i class="fab fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </p>
+    </footer>
 </body>
 
 </html>

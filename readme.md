@@ -1,196 +1,142 @@
 # ScheduLumos
 
-![ScheduLumos Screenshot](static/images/screenshot.png)
+ScheduLumos is a Flask-based CPU scheduling simulator that helps students and developers visualize and compare scheduling behavior for common algorithms.
 
-## Table of Contents
+![ScheduLumos Screenshot](static/images/Screenshot.png)
 
-- [Introduction](#introduction)
+## What This Project Does
 
-- [Features](#features)
+You can input process data from the browser and run scheduling calculations on the server. The app returns:
 
-- [Technologies Used](#technologies-used)
+- per-process metrics (waiting time, turnaround time, completion time)
+- average waiting and turnaround times
 
-- [Setup](#setup)
+## Implemented Algorithms
 
-- [Usage](#usage)
-
-- [Deployed Site](#deployed-site)
-
-- [License](#license)
-
-- [Contributing](#contributing)
-
-## Introduction
-
-**ScheduLumos** is a web application designed to simulate and visualize various CPU scheduling algorithms. The
-application allows users to input parameters such as arrival time, burst time, and priority to understand how different
-algorithms schedule processes. This tool is particularly useful for students and educators in computer science to learn
-and demonstrate the behavior of CPU scheduling algorithms.
-
-## Features
-
-- **Multiple Algorithms**: Supports various CPU scheduling algorithms including:
-
-- First-Come, First-Served (FCFS)
-
-- Shortest Job First (SJF) - Preemptive and Non-Preemptive
-
+- First Come First Served (FCFS)
+- Shortest Job First Non-Preemptive (SJF-NP)
+- Shortest Job First Preemptive (SJF-P)
 - Priority Scheduling
-
 - Round Robin (RR)
 
-- **Interactive Input**: Users can input process details like arrival time, burst time, and priority through an
-  intuitive UI.
+## Tech Stack
 
-- **Exception Handling**: It is also packed with error handling capabilities. for example, provokes non-numeric input,
-  uneven arrival and burst time, and such.
+- Backend: Python, Flask
+- Frontend: HTML, CSS, Vanilla JavaScript
+- Deployment: Vercel
 
-- **Results Visualization**: The site displays the execution order of processes along with average waiting time,
-  turnaround time, and other relevant metrics.
+## Input Rules and Validation
 
-- **Download Results**: Users can download the scheduling results as a `.txt` file for further analysis.
+Current validation rules enforced by backend and frontend:
 
-- **Responsive Design**: The interface is responsive and works well on both desktop and mobile devices.
+- Arrival time must be `>= 0`
+- Burst time must be `> 0`
+- Time quantum (Round Robin) must be `>= 1` (defaults to `2` if omitted)
+- Number of arrival and burst values must match
+- For priority scheduling, arrival, burst, and priority lengths must match
+- Inputs are parsed as integers from space-separated values
 
-## Technologies Used
+If validation fails, the server returns an `error` string in the JSON response.
 
-- **Frontend**:
+## Project Structure
 
-- HTML5
-
-- CSS3 (with Google Fonts integration)
-
-- JavaScript (for interactive features)
-
-- **Backend**:
-
-- Python
-
-- Flask (web framework)
-
-- **Deployment**:
-
-- Vercel (for hosting the application)
-
-- GitHub (for version control and continuous deployment)
-
-## Structure
-
-``` bash
-ScheduLumos
-├─ app.py
-├─ LICENSE
-├─ python
-│  ├─ fcfs.py
-│  ├─ priority_scheduling.py
-│  ├─ round_robin.py
-│  ├─ run_algorithms.py
-│  ├─ sjf_non_preemptive.py
-│  ├─ sjf_preemptive.py
-│  └─ utils.py
-├─ readme.md
-├─ requirements.txt
-├─ static
-│  ├─ css
-│  │  ├─ new_algorithm_style.css
-│  │  └─ styles.css
-│  ├─ images
-│  │  └─ <image assets>
-│  └─ js
-│     ├─ algorithm_common.js
-│     ├─ fcfs.js
-│     ├─ priority_schedule.js
-│     ├─ round_robin.js
-│     ├─ sjf_non_preemptive.js
-│     └─ sjf_preemptive.js
-├─ templates
-│  ├─ fcfs.html
-│  ├─ index.html
-│  ├─ priority_scheduling.html
-│  ├─ round_robin.html
-│  ├─ sjf_non_preemptive.html
-│  └─ sjf_preemptive.html
-└─ vercel.json
+```text
+ScheduLumos-main/
+|-- app.py
+|-- requirements.txt
+|-- vercel.json
+|-- python/
+|   |-- fcfs.py
+|   |-- priority_scheduling.py
+|   |-- round_robin.py
+|   |-- run_algorithms.py
+|   |-- sjf_non_preemptive.py
+|   |-- sjf_preemptive.py
+|   `-- utils.py
+|-- static/
+|   |-- css/
+|   |   |-- algorithm_style.css
+|   |   `-- styles.css
+|   |-- images/
+|   `-- js/
+|       |-- algorithm_common.js
+|       |-- fcfs.js
+|       |-- priority_schedule.js
+|       |-- round_robin.js
+|       |-- sjf_non_preemptive.js
+|       `-- sjf_preemptive.js
+`-- templates/
+      |-- fcfs.html
+      |-- index.html
+      |-- priority_scheduling.html
+      |-- round_robin.html
+      |-- sjf_non_preemptive.html
+      `-- sjf_preemptive.html
 ```
 
-## Setup
+## Run Locally
 
 ### Prerequisites
 
-- Python 3.x
+- Python 3.9+
+- pip
 
-- Git (for cloning the repository)
+### Steps
 
-- A modern web browser
+1. Clone repository and enter project directory.
 
-### Installation
+```bash
+git clone https://github.com/kausaraahmed/scheduLumos.git
+cd scheduLumos
+```
 
-1. **Clone the repository:**
+2. Create and activate virtual environment.
 
-   ```bash
+Windows (PowerShell):
 
-   git clone https://github.com/kausaraahmed/scheduLumos.git
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
 
-   cd scheduLumos
+Linux/macOS:
 
-   ```
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
-2. **Install dependencies:**
+3. Install dependencies.
 
-   It's recommended to use a virtual environment:
+```bash
+pip install -r requirements.txt
+```
 
-   ```bash
+4. Start server.
 
-   python3 -m venv venv
+```bash
+python app.py
+```
 
-   source venv/bin/activate # On Windows use `venv\Scripts\activate`
+5. Open in browser:
 
-   pip  install  -r  requirements.txt
+```text
+http://127.0.0.1:5000/
+```
 
-   ```
+## Live Demo
 
-3. **Run the application locally:**
-
-   ```bash
-
-   python app.py
-
-   ```
-
-The application will be accessible at `http://127.0.0.1:5000/`.
-
-### Deployment
-
-The application is deployed on [Vercel](https://vercel.com/). To deploy your own version, push your changes to GitHub,
-and Vercel will automatically build and deploy the application.
-
-## Usage
-
-1. **Access the application:**
-   Open the deployed site or run it locally as described above.
-
-2. **Navigate through scheduling options:**
-   From the main menu, select the scheduling algorithm you want to simulate.
-
-3. **Input process details:**
-   Provide the necessary inputs like arrival time, burst time, and priority (if applicable).
-
-4. **Run the algorithm:**
-   Click on the "Run Algorithm" button to view the scheduling results.
-
-5. **Download results:**
-   After the results are displayed, click the download icon in the top right corner to save the results as a `.txt`
-   file.
-
-## Deployed Site
-
-The application is live and accessible at: [https://schedulumos.vercel.app](https://schedulumos.vercel.app)
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+<https://schedulumos.vercel.app>
 
 ## Contributing
 
-Contributions are welcome! Please fork the repository and create a pull request with your changes. Ensure that your code
-follows the existing style and conventions.
+Contributions are welcome.
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Commit your changes.
+4. Open a pull request.
+
+## License
+
+Licensed under the MIT License. See `LICENSE` for details.

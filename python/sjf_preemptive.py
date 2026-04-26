@@ -1,10 +1,4 @@
-from python.utils import Utils
-
-
 class SjfPreemptive:
-    def __init__(self):
-        pass
-
     def find_waiting_time(self, processes, n, bt, wt, at):
         remaining_bt = bt[:]
         completed = 0
@@ -75,15 +69,25 @@ class SjfPreemptive:
         total_wt = sum(wt)
         total_tat = sum(tat)
 
-        result = "Process\tArrival_Time\tBurst_Time\tWaiting_Time\tTurnaround_Time\n"
+        result_processes = []
         for i in range(n):
-            result += f"{processes[i]}\t{at[i]}\t\t{bt[i]}\t\t{wt[i]}\t\t{tat[i]}\n"
+            result_processes.append(
+                {
+                    "id": processes[i],
+                    "arrival_time": at[i],
+                    "burst_time": bt[i],
+                    "waiting_time": wt[i],
+                    "turnaround_time": tat[i],
+                    "completion_time": at[i] + tat[i],
+                }
+            )
 
         avg_wt = total_wt / n
         avg_tat = total_tat / n
-        result += f"\nAverage Waiting Time: {avg_wt:.2f}\n"
-        result += f"Average Turnaround Time: {avg_tat:.2f}\n"
 
-        result += "\n" + Utils().draw_gantt_chart(execution_order)
-
-        return result
+        return {
+            "processes": result_processes,
+            "average_waiting_time": float(f"{avg_wt:.2f}"),
+            "average_turnaround_time": float(f"{avg_tat:.2f}"),
+            "gantt_chart": execution_order,
+        }

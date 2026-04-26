@@ -1,295 +1,87 @@
-// Global counter for process numbering
-let processCounter = 2;
+﻿let processCounter = 2;
 
-// Color palette for Gantt chart
-const colors = ['#4299e1', '#48bb78', '#ed8936', '#9f7aea', '#ed64a6', '#38b2ac', '#f56565'];
-
-// Remove a process row
-function removeProcess(button) {
-    const tbody = document.getElementById('process-tbody');
-    if (tbody.children.length > 1) {
-        button.closest('tr').remove();
-        validateInputs();
-    } else {
-        showValidationMessage('At least one process is required!', 'error');
-    }
-}
-
-// Add a new process row
 document.getElementById('add-process').addEventListener('click', function () {
     const tbody = document.getElementById('process-tbody');
     const newRow = document.createElement('tr');
-
     newRow.innerHTML = `
-        <td><strong>P${processCounter}</strong></td>
+        <td><input type="text" value="P${processCounter}" readonly></td>
         <td><input type="number" class="arrival-time" min="0" value="0"></td>
         <td><input type="number" class="burst-time" min="1" value="1"></td>
-        <td><button class="btn-remove" onclick="removeProcess(this)">✖</button></td>
+        <td class="action-col"><button class="remove-btn" onclick="removeProcess(this)">×</button></td>
     `;
-
     tbody.appendChild(newRow);
     processCounter++;
     validateInputs();
 });
 
-// Load example data
 document.getElementById('load-example').addEventListener('click', function () {
     const tbody = document.getElementById('process-tbody');
     tbody.innerHTML = `
         <tr>
-            <td><strong>P1</strong></td>
+            <td><input type="text" value="P1" readonly></td>
             <td><input type="number" class="arrival-time" min="0" value="0"></td>
             <td><input type="number" class="burst-time" min="1" value="5"></td>
-            <td><button class="btn-remove" onclick="removeProcess(this)">✖</button></td>
+            <td class="action-col"><button class="remove-btn" onclick="removeProcess(this)">×</button></td>
         </tr>
         <tr>
-            <td><strong>P2</strong></td>
+            <td><input type="text" value="P2" readonly></td>
             <td><input type="number" class="arrival-time" min="0" value="1"></td>
             <td><input type="number" class="burst-time" min="1" value="3"></td>
-            <td><button class="btn-remove" onclick="removeProcess(this)">✖</button></td>
+            <td class="action-col"><button class="remove-btn" onclick="removeProcess(this)">×</button></td>
         </tr>
         <tr>
-            <td><strong>P3</strong></td>
+            <td><input type="text" value="P3" readonly></td>
             <td><input type="number" class="arrival-time" min="0" value="2"></td>
             <td><input type="number" class="burst-time" min="1" value="8"></td>
-            <td><button class="btn-remove" onclick="removeProcess(this)">✖</button></td>
+            <td class="action-col"><button class="remove-btn" onclick="removeProcess(this)">×</button></td>
         </tr>
     `;
     processCounter = 4;
-    showValidationMessage('Example data loaded successfully!', 'success');
+    showValidationMessage('Example data loaded!', 'success');
 });
 
-// Clear all data
 document.getElementById('clear-all').addEventListener('click', function () {
     const tbody = document.getElementById('process-tbody');
     tbody.innerHTML = `
         <tr>
-            <td><strong>P1</strong></td>
+            <td><input type="text" value="P1" readonly></td>
             <td><input type="number" class="arrival-time" min="0" value="0"></td>
             <td><input type="number" class="burst-time" min="1" value="1"></td>
-            <td><button class="btn-remove" onclick="removeProcess(this)">✖</button></td>
+            <td class="action-col"><button class="remove-btn" disabled>×</button></td>
         </tr>
     `;
     processCounter = 2;
-    document.getElementById('output-section').innerHTML = `
-        <div class="output-empty">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-            <p style="font-size: 16px; font-weight: 500;">No results yet</p>
-            <p style="font-size: 14px; margin-top: 10px;">Run the algorithm to see scheduling results</p>
-        </div>
-    `;
+    document.getElementById('output-section').innerHTML = '';
     showValidationMessage('Table cleared!', 'success');
 });
 
-// Validate inputs
 function validateInputs() {
     const arrivalInputs = document.querySelectorAll('.arrival-time');
     const burstInputs = document.querySelectorAll('.burst-time');
-
     let isValid = true;
-    let errorMessage = '';
 
     arrivalInputs.forEach((input) => {
-        if (input.value === '' || input.value < 0) {
-            isValid = false;
-            errorMessage = 'Please fill all arrival times with non-negative values!';
-        }
+        if (input.value === '' || parseInt(input.value) < 0) isValid = false;
     });
 
     burstInputs.forEach((input) => {
-        if (input.value === '' || input.value <= 0) {
-            isValid = false;
-            errorMessage = 'Please fill all burst times with positive values!';
-        }
+        if (input.value === '' || parseInt(input.value) <= 0) isValid = false;
     });
-
-    if (!isValid && errorMessage) {
-        showValidationMessage(errorMessage, 'error');
-    } else if (isValid) {
-        showValidationMessage('', '');
-    }
 
     return isValid;
 }
 
-// Show validation message
-function showValidationMessage(message, type) {
-    const validationDiv = document.getElementById('validation-message');
-    validationDiv.textContent = message;
-    validationDiv.className = type ? `validation-msg ${type}` : '';
-}
-
-// Add input event listeners
-document.addEventListener('input', function (e) {
-    if (e.target.classList.contains('arrival-time') || e.target.classList.contains('burst-time')) {
-        validateInputs();
-    }
-});
-
-// Parse backend response and create table
-function parseAndDisplayResults(responseText) {
-    const lines = responseText.trim().split('\n');
-
-    // Parse process data
-    const processes = [];
-    let avgWaitingTime = 0;
-    let avgTurnaroundTime = 0;
-
-    for (let i = 1; i < lines.length; i++) {
-        const line = lines[i].trim();
-        if (line.startsWith('Average Waiting Time:')) {
-            avgWaitingTime = parseFloat(line.split(':')[1].trim());
-        } else if (line.startsWith('Average Turnaround Time:')) {
-            avgTurnaroundTime = parseFloat(line.split(':')[1].trim());
-        } else if (line && !line.startsWith('Process')) {
-            const parts = line.split('\t').filter(p => p.trim());
-            if (parts.length >= 5) {
-                processes.push({
-                    process: `P${parts[0]}`,
-                    arrivalTime: parseInt(parts[1]),
-                    burstTime: parseInt(parts[2]),
-                    waitingTime: parseInt(parts[3]),
-                    turnaroundTime: parseInt(parts[4])
-                });
-            }
-        }
-    }
-
-    // Create Gantt chart data
-    const ganttData = createGanttData(processes);
-
-    // Build output HTML
-    let html = `
-        <div class="summary-cards">
-            <div class="summary-card">
-                <h3>Average Waiting Time</h3>
-                <div class="value">${avgWaitingTime.toFixed(2)}</div>
-            </div>
-            <div class="summary-card">
-                <h3>Average Turnaround Time</h3>
-                <div class="value">${avgTurnaroundTime.toFixed(2)}</div>
-            </div>
-            <div class="summary-card">
-                <h3>Total Processes</h3>
-                <div class="value">${processes.length}</div>
-            </div>
-        </div>
-
-        <div class="gantt-chart">
-            <div class="gantt-title">Gantt Chart</div>
-            <div class="gantt-bar-container">
-                ${ganttData.bars}
-            </div>
-            <div class="gantt-time">
-                ${ganttData.times}
-            </div>
-        </div>
-
-        <table class="result-table">
-            <thead>
-                <tr>
-                    <th>Process</th>
-                    <th>Arrival Time</th>
-                    <th>Burst Time</th>
-                    <th>Waiting Time</th>
-                    <th>Turnaround Time</th>
-                    <th>Completion Time</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
-
-    processes.forEach((p, index) => {
-        const completionTime = p.arrivalTime + p.turnaroundTime;
-        html += `
-            <tr>
-                <td><strong>${p.process}</strong></td>
-                <td>${p.arrivalTime}</td>
-                <td>${p.burstTime}</td>
-                <td>${p.waitingTime}</td>
-                <td>${p.turnaroundTime}</td>
-                <td>${completionTime}</td>
-            </tr>
-        `;
-    });
-
-    html += `
-            </tbody>
-        </table>
-    `;
-
-    return html;
-}
-
-// Create Gantt chart visualization
-function createGanttData(processes) {
-    let currentTime = 0;
-    let bars = '';
-    let times = `<span style="flex: 0 0 30px;">${currentTime}</span>`;
-
-    processes.forEach((p, index) => {
-        // Add idle time if process hasn't arrived yet
-        if (currentTime < p.arrivalTime) {
-            const idleWidth = (p.arrivalTime - currentTime) * 40;
-            bars += `<div class="gantt-bar" style="flex: 0 0 ${idleWidth}px; background: #e2e8f0; color: #718096;">Idle</div>`;
-            times += `<span style="flex: 0 0 ${idleWidth}px;">${p.arrivalTime}</span>`;
-            currentTime = p.arrivalTime;
-        }
-
-        const width = p.burstTime * 40;
-        const color = colors[index % colors.length];
-        bars += `<div class="gantt-bar" style="flex: 0 0 ${width}px; background: ${color};">${p.process}</div>`;
-        currentTime += p.burstTime;
-        times += `<span style="flex: 0 0 ${width}px;">${currentTime}</span>`;
-    });
-
-    return { bars, times };
-}
-
-// Run algorithm
 document.getElementById('run-algo').addEventListener('click', function () {
     if (!validateInputs()) {
+        showValidationMessage('Please fill all fields correctly!', 'error');
         return;
     }
 
     const arrivalInputs = document.querySelectorAll('.arrival-time');
     const burstInputs = document.querySelectorAll('.burst-time');
-
     const arrivalTimes = Array.from(arrivalInputs).map(input => input.value).join(' ');
     const burstTimes = Array.from(burstInputs).map(input => input.value).join(' ');
 
-    const outputSection = document.getElementById('output-section');
-    outputSection.innerHTML = '<div class="spinner"></div><p style="text-align: center; color: #4a5568; margin-top: 20px;">Processing...</p>';
-
-    fetch('/fcfs', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `arrival-time=${arrivalTimes}&burst-time=${burstTimes}`
-    })
-        .then(response => response.text())
-        .then(data => {
-            if (data.includes('ERROR')) {
-                outputSection.innerHTML = `
-                    <div style="padding: 20px; background: #fed7d7; color: #c53030; border-radius: 8px; text-align: center;">
-                        <strong>Error:</strong> ${data}
-                    </div>
-                `;
-            } else {
-                outputSection.innerHTML = parseAndDisplayResults(data);
-                showValidationMessage('Algorithm executed successfully!', 'success');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            outputSection.innerHTML = `
-                <div style="padding: 20px; background: #fed7d7; color: #c53030; border-radius: 8px; text-align: center;">
-                    <strong>Error:</strong> An error occurred while processing. Please try again.
-                </div>
-            `;
-            showValidationMessage('Error executing algorithm!', 'error');
-        });
+    const formData = `arrival-time=${arrivalTimes}&burst-time=${burstTimes}`;
+    fetchAndDisplayResults('/fcfs', formData);
 });

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 
 from python.run_algorithms import RunAlgorithms
 
@@ -18,7 +18,7 @@ def fcfs():
         arrival_times = request.form.get("arrival-time")
         burst_times = request.form.get("burst-time")
 
-        return RunAlgorithms().run_fcfs(arrival_times, burst_times)
+        return jsonify(RunAlgorithms().run_fcfs(arrival_times, burst_times))
 
     return render_template("fcfs.html")
 
@@ -30,7 +30,7 @@ def sjf_non_preemptive():
         arrival_times = request.form.get("arrival-time")
         burst_times = request.form.get("burst-time")
 
-        return RunAlgorithms().run_sjfnp(arrival_times, burst_times)
+        return jsonify(RunAlgorithms().run_sjfnp(arrival_times, burst_times))
 
     return render_template("sjf_non_preemptive.html")
 
@@ -42,7 +42,7 @@ def sjf_preemptive():
         arrival_times = request.form.get("arrival-time")
         burst_times = request.form.get("burst-time")
 
-        return RunAlgorithms().run_sjfp(arrival_times, burst_times)
+        return jsonify(RunAlgorithms().run_sjfp(arrival_times, burst_times))
 
     return render_template("sjf_preemptive.html")
 
@@ -55,7 +55,9 @@ def priority_scheduling():
         burst_times = request.form.get("burst-time")
         priority = request.form.get("priority")
 
-        return RunAlgorithms().run_priority(arrival_times, burst_times, priority)
+        return jsonify(
+            RunAlgorithms().run_priority(arrival_times, burst_times, priority)
+        )
 
     return render_template("priority_scheduling.html")
 
@@ -68,7 +70,7 @@ def round_robin():
         burst_times = request.form.get("burst-time")
         time_quantum = request.form.get("time-quantum")
 
-        return RunAlgorithms().run_rr(arrival_times, burst_times, time_quantum)
+        return jsonify(RunAlgorithms().run_rr(arrival_times, burst_times, time_quantum))
 
     return render_template("round_robin.html")
 
@@ -80,4 +82,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)

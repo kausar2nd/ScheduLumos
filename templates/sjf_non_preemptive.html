@@ -1,82 +1,75 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>SJF Non-Preemptive Scheduling | ScheduLumos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='images/fav.png') }}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap">
+    <title>SJF Non-Preemptive - ScheduLumos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/algorithm_style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 
 <body>
-    <div class="header">
-        <h1>SJF Non-Preemptive Scheduling</h1>
-        <div class="header-buttons">
+    <div class="container">
+        <header>
+            <h1>SJF Non-Preemptive</h1>
+            <p>Shortest Job First (Non-Preemptive)</p>
+        </header>
+        <div id="validation-message"></div>
+
+        <button class="btn back-btn" id="back-btn">🡸 Back</button>
+
+        <section class="input-section">
+            <h2>Process Input</h2>
+            <div class="table-wrapper">
+                <table class="process-table">
+                    <thead>
+                        <tr>
+                            <th>PID</th>
+                            <th>Arrival Time</th>
+                            <th>Burst Time</th>
+                            <th class="action-col"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="process-tbody">
+                        <tr>
+                            <td><input type="text" value="P1" readonly></td>
+                            <td><input type="number" min="0" value="0" class="arrival-time"></td>
+                            <td><input type="number" min="1" value="6" class="burst-time"></td>
+                            <td class="action-col"><button class="remove-btn" disabled> </button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button class="add-row-btn" id="add-process">+ Add Process</button>
+        </section>
+        <section class="actions">
+            <button class="btn btn-primary" id="run-algo">Calculate</button>
+            <button class="btn btn-secondary" id="clear-all">Reset</button>
             <button class="btn btn-secondary" id="load-example">Load Example</button>
-            <button class="btn btn-danger" id="clear-all">Clear All</button>
-            <a href="{{ url_for('home') }}" style="text-decoration: none;">
-                <button class="btn btn-primary">Main Menu</button>
+        </section>
+        <section class="results-section" id="output-section"></section>
+    </div>
+
+    <footer>
+        <p>
+            Developed by <strong>KAUS4R</strong>&nbsp; ·
+            <a href="https://github.com/kausar2nd/" target="_blank" title="GitHub" class="footer-icon">
+                <i class="fab fa-github" aria-hidden="true"></i>
+            </a> ·
+            <a href="https://www.linkedin.com/in/kausar2nd/" target="_blank" title="LinkedIn" class="footer-icon">
+                <i class="fab fa-linkedin" aria-hidden="true"></i>
             </a>
-        </div>
-    </div>
-
-    <div class="main-content">
-        <div class="left-panel">
-            <h2 class="panel-title">Process Input</h2>
-
-            <div class="info-box">
-                <strong>Shortest Job First (Non-Preemptive)</strong><br>
-                Selects the process with the shortest burst time from those that have arrived. Once a process starts, it
-                runs to completion without interruption.
-                <br><br>
-                <strong>Arrival Time:</strong> When the process enters the ready queue<br>
-                <strong>Burst Time:</strong> Time required for CPU execution
-            </div>
-
-            <table class="input-table" id="process-table">
-                <thead>
-                    <tr>
-                        <th>Process</th>
-                        <th>Arrival Time</th>
-                        <th>Burst Time</th>
-                        <th>Remove</th>
-                    </tr>
-                </thead>
-                <tbody id="process-tbody">
-                    <tr>
-                        <td><strong>P1</strong></td>
-                        <td><input type="number" class="arrival-time" min="0" value="0"></td>
-                        <td><input type="number" class="burst-time" min="1" value="1"></td>
-                        <td><button class="btn-remove" onclick="removeProcess(this)">✖</button></td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <button class="btn-add" id="add-process">+ Add Process</button>
-            <div id="validation-message"></div>
-            <button class="btn-run" id="run-algo">Run Algorithm</button>
-        </div>
-
-        <div class="right-panel">
-            <h2 class="panel-title">Results</h2>
-            <div id="output-section">
-                <div class="output-empty">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                    <p style="font-size: 16px; font-weight: 500;">No results yet</p>
-                    <p style="font-size: 14px; margin-top: 10px;">Run the algorithm to see scheduling results</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
+        </p>
+    </footer>
     <script src="{{ url_for('static', filename='js/algorithm_common.js') }}"></script>
     <script src="{{ url_for('static', filename='js/sjf_non_preemptive.js') }}"></script>
+    <script>
+        document.getElementById('back-btn').addEventListener('click', function () {
+            window.location.href = "{{ url_for('home') }}";
+        });
+    </script>
 </body>
 
 </html>

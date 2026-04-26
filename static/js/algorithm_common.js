@@ -1,8 +1,8 @@
-// Shared functions for all algorithm pages
+﻿// Shared functions for all algorithm pages
 console.log('✅ algorithm_common.js loaded successfully');
 
-// Color palette for Gantt chart
-const colors = ['#4299e1', '#48bb78', '#ed8936', '#9f7aea', '#ed64a6', '#38b2ac', '#f56565'];
+// Color palette for Gantt chart (Monochrome gradient)
+const colors = ['#555555', '#666666', '#777777', '#888888', '#999999', '#aaaaaa', '#bbbbbb'];
 
 // Remove a process row
 function removeProcess(button) {
@@ -17,42 +17,44 @@ function removeProcess(button) {
 
 // Show validation message
 function showValidationMessage(message, type) {
-    const validationDiv = document.getElementById('validation-message');
+    const container = document.querySelector('.container') || document.body;
+
+    // Remove any existing validation message
+    const existingMsg = document.getElementById('validation-message');
+    if (existingMsg) {
+        existingMsg.remove();
+    }
+
+    // Create new validation div
+    const validationDiv = document.createElement('div');
+    validationDiv.id = 'validation-message';
     validationDiv.textContent = message;
     validationDiv.className = type ? `validation-msg ${type}` : '';
+
+    // Insert at the beginning of container or after header
+    const header = document.querySelector('header');
+    if (header) {
+        header.parentNode.insertBefore(validationDiv, header.nextSibling);
+    } else {
+        container.insertBefore(validationDiv, container.firstChild);
+    }
+
+    // Remove element from DOM after animation completes
+    if (type === 'success' || type === 'error') {
+        const animationDuration = type === 'success' ? 3000 : 3000; // Match CSS animation duration
+        setTimeout(() => {
+            if (validationDiv.parentNode) {
+                validationDiv.remove();
+            }
+        }, animationDuration);
+    }
 }
 
 // Parse backend response and create table
-function parseAndDisplayResults(responseText) {
-    const lines = responseText.trim().split('\n');
-
-    // Parse process data
-    const processes = [];
-    let avgWaitingTime = 0;
-    let avgTurnaroundTime = 0;
-
-    for (let i = 1; i < lines.length; i++) {
-        const line = lines[i].trim();
-        if (line.startsWith('Average Waiting Time:')) {
-            avgWaitingTime = parseFloat(line.split(':')[1].trim());
-        } else if (line.startsWith('Average Turnaround Time:')) {
-            avgTurnaroundTime = parseFloat(line.split(':')[1].trim());
-        } else if (line && !line.startsWith('Process')) {
-            const parts = line.split('\t').filter(p => p.trim());
-            if (parts.length >= 5) {
-                processes.push({
-                    process: `P${parts[0]}`,
-                    arrivalTime: parseInt(parts[1]),
-                    burstTime: parseInt(parts[2]),
-                    waitingTime: parseInt(parts[3]),
-                    turnaroundTime: parseInt(parts[4])
-                });
-            }
-        }
-    }
-
-    // Create Gantt chart data
-    const ganttData = createGanttData(processes);
+function parseAndDisplayResults(data) {
+    const processes = data.processes;
+    const avgWaitingTime = data.average_waiting_time;
+    const avgTurnaroundTime = data.average_turnaround_time;
 
     // Build output HTML
     let html = `
@@ -70,17 +72,6 @@ function parseAndDisplayResults(responseText) {
                 <div class="value">${processes.length}</div>
             </div>
         </div>
-
-        <div class="gantt-chart">
-            <div class="gantt-title">Gantt Chart</div>
-            <div class="gantt-bar-container">
-                ${ganttData.bars}
-            </div>
-            <div class="gantt-time">
-                ${ganttData.times}
-            </div>
-        </div>
-
         <table class="result-table">
             <thead>
                 <tr>
@@ -96,15 +87,25 @@ function parseAndDisplayResults(responseText) {
     `;
 
     processes.forEach((p, index) => {
-        const completionTime = p.arrivalTime + p.turnaroundTime;
+        let processName = p.id;
+        if (typeof processName === 'number') {
+            processName = `P${processName}`;
+        } else if (!String(processName).startsWith('P')) {
+            processName = `P${processName}`;
+        }
+
+        // Find correct color based on process index or ID for row highlighting
+        const processNum = parseInt(String(processName).replace('P', '')) || index;
+        const color = colors[processNum % colors.length];
+
         html += `
-            <tr>
-                <td><strong>${p.process}</strong></td>
-                <td>${p.arrivalTime}</td>
-                <td>${p.burstTime}</td>
-                <td>${p.waitingTime}</td>
-                <td>${p.turnaroundTime}</td>
-                <td>${completionTime}</td>
+            <tr style="border-left: 5px solid ${color}; background-color: ${color}15;">
+                <td><strong>${processName}</strong></td>
+                <td>${p.arrival_time}</td>
+                <td>${p.burst_time}</td>
+                <td>${p.waiting_time}</td>
+                <td>${p.turnaround_time}</td>
+                <td>${p.completion_time}</td>
             </tr>
         `;
     });
@@ -113,39 +114,13 @@ function parseAndDisplayResults(responseText) {
             </tbody>
         </table>
     `;
-
     return html;
-}
-
-// Create Gantt chart visualization
-function createGanttData(processes) {
-    let currentTime = 0;
-    let bars = '';
-    let times = `<span style="flex: 0 0 30px;">${currentTime}</span>`;
-
-    processes.forEach((p, index) => {
-        // Add idle time if process hasn't arrived yet
-        if (currentTime < p.arrivalTime) {
-            const idleWidth = (p.arrivalTime - currentTime) * 40;
-            bars += `<div class="gantt-bar" style="flex: 0 0 ${idleWidth}px; background: #e2e8f0; color: #718096;">Idle</div>`;
-            times += `<span style="flex: 0 0 ${idleWidth}px;">${p.arrivalTime}</span>`;
-            currentTime = p.arrivalTime;
-        }
-
-        const width = p.burstTime * 40;
-        const color = colors[index % colors.length];
-        bars += `<div class="gantt-bar" style="flex: 0 0 ${width}px; background: ${color};">${p.process}</div>`;
-        currentTime += p.burstTime;
-        times += `<span style="flex: 0 0 ${width}px;">${currentTime}</span>`;
-    });
-
-    return { bars, times };
 }
 
 // Generic fetch and display function
 function fetchAndDisplayResults(url, formData) {
     const outputSection = document.getElementById('output-section');
-    outputSection.innerHTML = '<div class="spinner"></div><p style="text-align: center; color: #4a5568; margin-top: 20px;">Processing...</p>';
+    outputSection.innerHTML = '<div class="spinner"></div><p style="text-align: center; margin-top: 20px;">Processing...</p>';
 
     fetch(url, {
         method: 'POST',
@@ -154,14 +129,20 @@ function fetchAndDisplayResults(url, formData) {
         },
         body: formData
     })
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
-            if (data.includes('ERROR')) {
+            if (data.error) {
                 outputSection.innerHTML = `
-                    <div style="padding: 20px; background: #fed7d7; color: #c53030; border-radius: 8px; text-align: center;">
-                        <strong>Error:</strong> ${data}
-                    </div>
-                `;
+                <div style="padding: 20px; background: rgba(102, 102, 102, 0.2); color: var(--text); border: 1px solid var(--border); border-radius: 8px; text-align: center;">
+                    <strong>Error:</strong> ${data.error}
+                </div>
+            `;
+                showValidationMessage('Error: ' + data.error, 'error');
             } else {
                 outputSection.innerHTML = parseAndDisplayResults(data);
                 showValidationMessage('Algorithm executed successfully!', 'success');
@@ -170,10 +151,10 @@ function fetchAndDisplayResults(url, formData) {
         .catch(error => {
             console.error('Error:', error);
             outputSection.innerHTML = `
-                <div style="padding: 20px; background: #fed7d7; color: #c53030; border-radius: 8px; text-align: center;">
-                    <strong>Error:</strong> An error occurred while processing. Please try again.
-                </div>
-            `;
-            showValidationMessage('Error executing algorithm!', 'error');
+            <div style="padding: 20px; background: rgba(102, 102, 102, 0.2); color: var(--text); border: 1px solid var(--border); border-radius: 8px; text-align: center;">
+                <strong>Error:</strong> ${error.message || 'An error occurred while processing'}
+            </div>
+        `;
+            showValidationMessage('Error: ' + (error.message || 'Processing failed'), 'error');
         });
 }
